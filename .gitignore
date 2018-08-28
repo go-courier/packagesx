@@ -1,0 +1,5 @@
+.idea/
+
+coverage.txt
+*.out
+go.sum
