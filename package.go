@@ -21,16 +21,20 @@ func Load(pattern string) (*Package, error) {
 		return nil, err
 	}
 
+	return NewPackage(pkgs[0]), nil
+}
+
+func NewPackage(pkg *packages.Package) *Package {
 	p := &Package{
-		Package: pkgs[0],
+		Package: pkg,
 	}
 
 	s := pkgSet{}
-	s.add(pkgs[0])
+	s.add(pkg)
 
 	p.AllPackages = s.allPackages()
 
-	return p, nil
+	return p
 }
 
 type pkgSet map[string]*packages.Package
