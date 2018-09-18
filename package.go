@@ -43,7 +43,9 @@ func (s pkgSet) add(pkg *packages.Package) {
 	s[pkg.ID] = pkg
 
 	for k := range pkg.Imports {
-		s.add(pkg.Imports[k])
+		if _, ok := s[k]; !ok {
+			s.add(pkg.Imports[k])
+		}
 	}
 }
 
