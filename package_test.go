@@ -10,33 +10,34 @@ import (
 	"testing"
 
 	"github.com/go-courier/reflectx/typesutil"
-	"github.com/stretchr/testify/require"
+	. "github.com/onsi/gomega"
 )
 
 func TestPackage(t *testing.T) {
 	cwd, _ := os.Getwd()
 	pkg, err := Load(filepath.Join(cwd, "./__fixtures__"))
-	require.NoError(t, err)
-	require.NotEmpty(t, pkg.AllPackages)
+
+	NewWithT(t).Expect(err).To(BeNil())
+	NewWithT(t).Expect(pkg.AllPackages).NotTo(BeEmpty())
 
 	{
 		tpeName := pkg.TypeName("Date")
-		require.Equal(t, "type Date", pkg.CommentsOf(pkg.IdentOf(tpeName)))
+		NewWithT(t).Expect(pkg.CommentsOf(pkg.IdentOf(tpeName))).To(Equal("type Date"))
 	}
 
 	{
 		tpeName := pkg.Var("test")
-		require.Equal(t, "var", pkg.CommentsOf(pkg.IdentOf(tpeName)))
+		NewWithT(t).Expect(pkg.CommentsOf(pkg.IdentOf(tpeName))).To(Equal("var"))
 	}
 
 	{
 		tpeName := pkg.Const("A")
-		require.Equal(t, "a\n\nA", pkg.CommentsOf(pkg.IdentOf(tpeName)))
+		NewWithT(t).Expect(pkg.CommentsOf(pkg.IdentOf(tpeName))).To(Equal("a\n\nA"))
 	}
 
 	{
 		tpeName := pkg.Func("Print")
-		require.Equal(t, "func Print", pkg.CommentsOf(pkg.IdentOf(tpeName)))
+		NewWithT(t).Expect(pkg.CommentsOf(pkg.IdentOf(tpeName))).To(Equal("func Print"))
 	}
 
 	cases := []struct {
@@ -125,16 +126,17 @@ func TestPackage(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.funcName, func(t *testing.T) {
 			values, n := pkg.FuncResultsOf(pkg.Func(c.funcName))
-			require.Len(t, values, n)
-			require.Equal(t, c.results, printValues(pkg.Fset, values))
+			NewWithT(t).Expect(values).To(HaveLen(n))
+			NewWithT(t).Expect(c.results).To(Equal(printValues(pkg.Fset, values)))
 		})
 	}
 
 	{
 		method, _ := typesutil.FromTType(pkg.TypeName("String").Type()).MethodByName("Method")
 		values, n := pkg.FuncResultsOf(method.(*typesutil.TMethod).Func)
-		require.Equal(t, 1, n)
-		require.Len(t, values, n)
+
+		NewWithT(t).Expect(n).To(Equal(1))
+		NewWithT(t).Expect(values).To(HaveLen(n))
 	}
 }
 

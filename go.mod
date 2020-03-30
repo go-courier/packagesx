@@ -1,7 +1,9 @@
 module github.com/go-courier/packagesx
 
+go 1.14
+
 require (
-	github.com/go-courier/reflectx v1.3.3
-	github.com/stretchr/testify v1.3.0
-	golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e
+	github.com/go-courier/reflectx v1.3.4
+	github.com/onsi/gomega v1.9.0
+	golang.org/x/tools v0.0.0-20200330040139-fa3cc9eebcfe
 )

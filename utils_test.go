@@ -3,12 +3,10 @@ package packagesx
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	. "github.com/onsi/gomega"
 )
 
 func TestGetPkgImportPathAndExpose(t *testing.T) {
-	tt := require.New(t)
-
 	cases := []struct {
 		importPath string
 		expose     string
@@ -33,7 +31,8 @@ func TestGetPkgImportPathAndExpose(t *testing.T) {
 
 	for _, caseItem := range cases {
 		importPath, expose := GetPkgImportPathAndExpose(caseItem.s)
-		tt.Equal(caseItem.importPath, importPath)
-		tt.Equal(caseItem.expose, expose)
+
+		NewWithT(t).Expect(importPath).To(Equal(caseItem.importPath))
+		NewWithT(t).Expect(expose).To(Equal(caseItem.expose))
 	}
 }

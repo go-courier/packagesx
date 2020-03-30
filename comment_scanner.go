@@ -93,7 +93,7 @@ func StringifyCommentGroup(commentGroupList ...*ast.CommentGroup) (comments stri
 	}
 	for _, commentGroup := range commentGroupList {
 		for _, line := range strings.Split(commentGroup.Text(), "\n") {
-			if strings.HasPrefix(line, "go:generate") {
+			if strings.HasPrefix(line, "go:") {
 				continue
 			}
 			comments = comments + "\n" + line

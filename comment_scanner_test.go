@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	. "github.com/onsi/gomega"
 )
 
 func TestCommentScanner(t *testing.T) {
@@ -20,7 +20,7 @@ func TestCommentScanner(t *testing.T) {
 
 	ast.Inspect(file, func(node ast.Node) bool {
 		comments := commentScanner.CommentsOf(node)
-		require.True(t, len(strings.Split(comments, "\n")) <= 3)
+		NewWithT(t).Expect(len(strings.Split(comments, "\n")) <= 3).To(BeTrue())
 		return true
 	})
 }
